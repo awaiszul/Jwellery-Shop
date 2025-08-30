@@ -28,7 +28,7 @@ const JewelryFAQs = () => {
             theme === "dark" ? "text-yellow-400" : "text-yellow-700"
           }`}
         >
-          FAQ's
+          FAQ &apos; s
         </p>
         <h2
           className={`text-4xl font-bold ${

@@ -44,11 +44,11 @@ export default function BuyNowPage() {
             theme === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <h1 className="text-3xl font-bold mb-4 text-amber-400 text-center md:text-left">
+          <h1 className="text-3xl font-bold mb-4 text-amber-500 text-center md:text-left">
             Checkout
           </h1>
 
-          <h2 className="text-xl font-semibold text-amber-300
+          <h2 className="text-xl font-semibold text-amber-400
            mb-2">Billing & Shipping</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -113,7 +113,7 @@ export default function BuyNowPage() {
           />
 
           {/* Payment Section */}
-          <h2 className="text-xl font-semibold text-amber-300 mt-4 mb-2">Payment Details</h2>
+          <h2 className="text-xl font-semibold text-amber-400 mt-4 mb-2">Payment Details</h2>
           <input
             type="text"
             name="cardNumber"
@@ -147,7 +147,7 @@ export default function BuyNowPage() {
 
           <button
             type="submit"
-            className="mt-4 w-full py-3 bg-yellow-500 text-white font-semibold hover:bg-yellow-400 transition"
+            className="mt-4 w-full py-3 bg-amber-500 text-white font-semibold hover:bg-yellow-400 transition"
           >
             Place Order
           </button>
@@ -159,7 +159,7 @@ export default function BuyNowPage() {
             theme === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+          <h2 className="text-xl text-amber-500 font-semibold mb-4">Order Summary</h2>
           <div className="flex justify-between text-gray-500">
             <span>Subtotal</span>
             <span>$159</span>

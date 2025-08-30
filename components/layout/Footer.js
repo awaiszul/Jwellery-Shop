@@ -4,17 +4,14 @@ import { ThemeContext } from "@/context/ThemeContext";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
+
 export default function Footer() {
   const { theme } = useContext(ThemeContext);
 
   return (
     <footer
       className={`px-6 md:px-16 lg:px-24 xl:px-32 w-full transition-colors duration-500
-        ${
-          theme === "dark"
-            ? "bg-black text-gray-300"
-            : "bg-white text-gray-700"
-        }
+        ${theme === "dark" ? "bg-black text-gray-300" : "bg-white text-gray-700"}
       `}
     >
       <div
@@ -25,15 +22,15 @@ export default function Footer() {
         {/* Logo + description */}
         <div className="max-w-96">
           {/* Logo */}
-           <Link href="/" className="flex items-center">
-          <Image
-            src={theme === "light" ? assets.lightLogo : assets.darkLogo}
-            alt="Logo"
-            width={85}
-            height={80}
-            priority
-          />
-        </Link>
+          <Link href="/" className="flex items-center">
+            <Image
+              src={theme === "light" ? assets.lightLogo : assets.darkLogo}
+              alt="Logo"
+              width={85}
+              height={80}
+              priority
+            />
+          </Link>
 
           <p
             className={`mt-6 text-sm ${
@@ -46,7 +43,8 @@ export default function Footer() {
 
           {/* Social Icons */}
           <div className="flex items-center gap-3 mt-4">
-            <a href="#">
+            <Link href="#">
+              {/* Twitter/X */}
               <svg
                 width="20"
                 height="20"
@@ -62,8 +60,10 @@ export default function Footer() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
-            <a href="#">
+            </Link>
+
+            <Link href="#">
+              {/* Github */}
               <svg
                 width="20"
                 height="20"
@@ -79,8 +79,10 @@ export default function Footer() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
-            <a href="#">
+            </Link>
+
+            <Link href="#">
+              {/* LinkedIn */}
               <svg
                 width="20"
                 height="20"
@@ -96,7 +98,7 @@ export default function Footer() {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -115,20 +117,13 @@ export default function Footer() {
                 theme === "dark" ? "text-gray-400" : "text-gray-500"
               }`}
             >
-              <li>
-                <a href="#">Documentation</a>
-              </li>
-              <li>
-                <a href="#">Tutorials</a>
-              </li>
-              <li>
-                <a href="#">Blog</a>
-              </li>
-              <li>
-                <a href="#">Community</a>
-              </li>
+              <li><Link href="#">Documentation</Link></li>
+              <li><Link href="#">Tutorials</Link></li>
+              <li><Link href="#">Blog</Link></li>
+              <li><Link href="#">Community</Link></li>
             </ul>
           </div>
+
           <div>
             <h2
               className={`font-semibold mb-5 ${
@@ -142,18 +137,10 @@ export default function Footer() {
                 theme === "dark" ? "text-gray-400" : "text-gray-500"
               }`}
             >
-              <li>
-                <a href="#">About</a>
-              </li>
-              <li>
-                <a href="#">Careers</a>
-              </li>
-              <li>
-                <a href="#">Privacy</a>
-              </li>
-              <li>
-                <a href="#">Terms</a>
-              </li>
+              <li><Link href="#">About</Link></li>
+              <li><Link href="#">Careers</Link></li>
+              <li><Link href="#">Privacy</Link></li>
+              <li><Link href="#">Terms</Link></li>
             </ul>
           </div>
         </div>
@@ -166,14 +153,14 @@ export default function Footer() {
         }`}
       >
         Copyright 2025 ©{" "}
-        <a
+        <Link
           href="/"
           className={`${
             theme === "dark" ? "text-yellow-400" : "text-yellow-700"
           }`}
         >
           Muhammad Awais
-        </a>
+        </Link>
         . All Rights Reserved.
       </p>
     </footer>

@@ -120,7 +120,7 @@ export default function AuthForm() {
             <button
               type="button"
               onClick={() => setRole("buyer")}
-              className={`px-4 py-2 font-medium transition ${
+              className={`px-4 py-2 cursor-pointer font-medium transition ${
                 role === "buyer"
                   ? "bg-yellow-600 text-white border border-yellow-600"
                   : theme === "light"
@@ -133,7 +133,7 @@ export default function AuthForm() {
             <button
               type="button"
               onClick={() => setRole("admin")}
-              className={`px-4 py-2 font-medium transition ${
+              className={`px-4 py-2 cursor-pointer font-medium transition ${
                 role === "admin"
                   ? "bg-yellow-600 text-white border border-yellow-600"
                   : theme === "light"

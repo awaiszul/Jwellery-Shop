@@ -76,16 +76,16 @@ export default function Navbar() {
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     // agar current page /product nahi hai, to redirect
-    if (window.location.pathname !== "/product") {
-      router.push("/product");
+    if (window.location.pathname !== "/user/product") {
+      router.push("/user/product");
     }
   };
 
   const navLinks = [
     { name: "Home", href: "/", icon: <Home size={18} /> },
-    { name: "About", href: "/about", icon: <Info size={18} /> },
-    { name: "All Products", href: "/product", icon: <Package size={18} /> },
-    { name: "Contact", href: "/contact", icon: <Phone size={18} /> },
+    { name: "About", href: "/user/about", icon: <Info size={18} /> },
+    { name: "All Products", href: "/user/product", icon: <Package size={18} /> },
+    { name: "Contact", href: "/user/contact", icon: <Phone size={18} /> },
   ];
   if (loadingUser) {
     return null; // ya <div>Loading...</div>
@@ -152,7 +152,7 @@ export default function Navbar() {
           </div>
 
           {/* Cart */}
-          <Link href="/cart">
+          <Link href="/user/cart">
             <button className="relative p-2 cursor-pointer rounded-full transition text-yellow-600">
               <ShoppingCart size={22} />
               {cart?.length > 0 && (
@@ -188,7 +188,7 @@ export default function Navbar() {
           {/* User Auth Buttons */}
           {!user ? (
             <Link
-              href="/Login"
+              href="/user/Login"
               className={`hidden md:inline-block px-5 py-1.5 rounded-full font-medium transition
           ${
             theme === "light"
@@ -225,7 +225,7 @@ export default function Navbar() {
               }`} ref={profileRef}
                 >
                   <Link
-                    href="/buyer_orders"
+                    href="/user/buyer_orders"
                     className="block px-4 py-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700"
                     onClickCapture={() => setOpen(false)}
                   >

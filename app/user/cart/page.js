@@ -1,22 +1,54 @@
 "use client";
 import React, { useContext, useState } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-import { FaArrowLeft, FaMapMarkerAlt, FaCreditCard, FaTimes } from "react-icons/fa";
+import {
+  FaArrowLeft,
+  FaMapMarkerAlt,
+  FaCreditCard,
+  FaTimes,
+} from "react-icons/fa";
+
+import { useRouter } from "next/navigation";
 
 const CartPage = () => {
-  const { cart, removeFromCart, updateQuantity, cartTotal, theme } =
-    useContext(ThemeContext);
+  const {
+    cart,
+    removeFromCart,
+    updateQuantity,
+    cartTotal,
+    theme,
+  } = useContext(ThemeContext);
   const [showAddress, setShowAddress] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [address, setAddress] = useState(""); // default empty
+  const router = useRouter();
+
+ 
+
+  const handleAddressChange = () => {
+    router.push("/user/address"); // open address page
+  };
+    const handlePlaceOrder = () => {
+    if (cart.length === 0) {
+      alert("Your cart is empty. Please add items before placing an order.");
+      return;
+    }
+     if (!address) {
+      alert("⚠️ Please select or add an address before placing order!");
+      return;
+    }
+    if (paymentMethod === "COD") {
+      alert("✅ Your order has been placed!");
+    } else {
+      router.push("/user/buy"); // Online payment page
+    }
+    
+  };
 
   // 🎨 Theme colors
   const isLight = theme === "light";
-  const bgColor = isLight
-    ? "bg-white text-gray-900"
-    : "bg-black text-gray-100";
-  const cardColor = isLight ? "bg-gray-50" : "bg-gray-900";
-  const borderColor = isLight
-    ? "border-yellow-600/50"
-    : "border-yellow-500/50";
+  const bgColor = isLight ? "bg-white text-gray-900" : "bg-black text-gray-100";
+  const borderColor = isLight ? "border-yellow-600/50" : "border-yellow-500/50";
 
   return (
     <div
@@ -24,7 +56,7 @@ const CartPage = () => {
     >
       {/* Left: Cart Items */}
       <div className="flex-1 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
+        <h1 className="text-3xl text-yellow-500 font-bold mb-6 flex items-center gap-2">
           Shopping Cart{" "}
           <span className="text-sm text-yellow-600">{cart.length} Items</span>
         </h1>
@@ -66,7 +98,9 @@ const CartPage = () => {
                     <select
                       className={`outline-none ml-2 border ${borderColor} px-2 py-1 bg-transparent text-current`}
                       value={product.quantity}
-                      onChange={(e) => updateQuantity(product.id, e.target.value)}
+                      onChange={(e) =>
+                        updateQuantity(product.id, e.target.value)
+                      }
                     >
                       {Array(10)
                         .fill("")
@@ -108,12 +142,12 @@ const CartPage = () => {
 
       {/* Right: Order Summary */}
       <div
-        className={`max-w-[360px] w-full ${cardColor} p-6 shadow-md max-md:mt-16 border ${borderColor}`}
+        className={`max-w-[360px] w-full p-6 shadow-md max-md:mt-16 border border-amber-500`}
       >
-        <h2 className="text-xl font-semibold flex items-center gap-2">
+        <h2 className="text-xl text-yellow-600 font-semibold flex items-center gap-2">
           Order Summary
         </h2>
-        <hr className={`my-4 ${borderColor}`} />
+        <hr className="my-4 border-t-1 border-yellow-500" />
 
         {/* Address */}
         <div className="mb-6">
@@ -121,24 +155,30 @@ const CartPage = () => {
             <FaMapMarkerAlt /> Delivery Address
           </p>
           <div className="relative flex justify-between items-start mt-2">
-            <p className="text-gray-500">No address found</p>
+            <p className="text-gray-500">
+              {address ? address : "No address found"}
+            </p>
             <button
               onClick={() => setShowAddress(!showAddress)}
-              className="text-yellow-600 hover:underline cursor-pointer"
+              className="text-yellow-500 hover:underline cursor-pointer"
             >
               Change
             </button>
             {showAddress && (
-              <div
-                className={`absolute top-12 py-1 ${bgColor} border ${borderColor} text-sm w-full shadow-md`}
-              >
+              <div className="absolute top-6 bg-white border border-gray-300 text-sm w-full">
                 <p
-                  onClick={() => setShowAddress(false)}
-                  className="text-gray-500 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                  onClick={() => {
+                    setAddress("New York, USA");
+                    setShowAddress(false);
+                  }}
+                  className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
                 >
                   New York, USA
                 </p>
-                <p className="text-yellow-600 text-center cursor-pointer p-2 hover:bg-yellow-100 dark:hover:bg-gray-800">
+                <p
+                  onClick={handleAddressChange}
+                  className="text-yellow-500 text-center cursor-pointer p-2 hover:bg-yellow-500/10"
+                >
                   Add address
                 </p>
               </div>
@@ -150,7 +190,9 @@ const CartPage = () => {
             <FaCreditCard /> Payment Method
           </p>
           <select
-            className={`w-full border ${borderColor} px-3 py-2 mt-2 outline-none bg-transparent text-current`}
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value)}
+            className="w-full border px-3 py-2 mt-2 outline-none bg-transparent text-current"
           >
             <option
               value="COD"
@@ -167,13 +209,13 @@ const CartPage = () => {
           </select>
         </div>
 
-        <hr className={`${borderColor}`} />
+        <hr className="border-t-1 border-yellow-500" />
 
         {/* Totals */}
         <div className="text-gray-500 mt-4 space-y-2">
           <p className="flex justify-between">
             <span>Price</span>
-            <span className="text-gray-800 dark:text-gray-200">
+            <span className="text-gray-600 dark:text-gray-200">
               ${cartTotal.toFixed(2)}
             </span>
           </p>
@@ -183,7 +225,7 @@ const CartPage = () => {
           </p>
           <p className="flex justify-between">
             <span>Tax (2%)</span>
-            <span className="text-gray-800 dark:text-gray-200">
+            <span className="text-gray-600 dark:text-gray-200">
               ${(cartTotal * 0.02).toFixed(2)}
             </span>
           </p>
@@ -196,8 +238,11 @@ const CartPage = () => {
         </div>
 
         {/* Button */}
-        <button className="w-full py-3 mt-6 cursor-pointer bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition border border-yellow-700">
-          Place Order
+        <button
+          onClick={()=>{ handlePlaceOrder();}}
+          className="w-full py-3 mt-6 cursor-pointer bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition border border-yellow-700"
+        >
+          {paymentMethod === "COD" ? "Place Order" : "Proceed to Checkout"}
         </button>
       </div>
     </div>

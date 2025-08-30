@@ -5,12 +5,16 @@ import { ThemeContext } from "@/context/ThemeContext";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { Sun, Moon } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 
 
 const AdminNavbar = () => {
   const { theme, logout, setUser, toggleTheme } = useContext(ThemeContext);
-
+const router = useRouter();
+  const logoutAndRedirect = () => {
+    logout();
+    router.push("/user/Login");
+  };
 
 
   return (
@@ -41,7 +45,7 @@ const AdminNavbar = () => {
           >
             {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
           </button>
-          <button onClick={logout} className="border rounded-full text-sm px-4 py-1 bg-yellow-600 hover:bg-yellow-700 text-white">
+          <button onClick={logoutAndRedirect} className="border rounded-full text-sm px-4 py-1 bg-yellow-600 hover:bg-yellow-700 text-white">
             Logout
           </button>
         </div>

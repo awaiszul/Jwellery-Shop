@@ -1,57 +1,85 @@
 "use client";
-import { useParams } from "next/navigation";
-import { products } from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
-import { useContext } from "react";
+import { useSearchParams } from "next/navigation";
+import { useContext, useEffect } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-export default function CategoryPage() {
-  const { slug } = useParams(); // ✅ category name url se lo
-  const { theme, counts, handleAdd, handleIncrement, handleDecrement } =
-    useContext(ThemeContext);
-  const filteredProducts = products.filter(
-    (p) => p.category.toLowerCase() === slug.toLowerCase()
-  );
+import Link from "next/link";
+
+export default function ProductsPage() {
+  const {
+    theme,
+    counts,
+    handleAdd,
+    handleIncrement,
+    handleDecrement,
+    addToCart,
+    filteredProducts,
+    selectedCategory,
+    setSelectedCategory,
+    products,
+  } = useContext(ThemeContext);
+
+  const searchParams = useSearchParams();
+  const category = searchParams.get("category");
+
+  // Set selectedCategory from URL if exists
+  useEffect(() => {
+    if (category) setSelectedCategory(category);
+  }, [category, setSelectedCategory]);
 
   return (
-    <section className="py-16 w-[90%] mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-10">{slug} Products</h2>
-
-      {filteredProducts.length === 0 ? (
-        <p className="text-center text-gray-500">No products found.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {filteredProducts.map((product) => (
+    <section
+      className={`py-16 px-20 ${
+        theme === "light"
+          ? "bg-white text-gray-900"
+          : "bg-gray-950 text-gray-100"
+      } font-ovo font-outfit`} // 👈 dono fonts apply kiye
+    >
+      <h2 className="text-3xl font-bold text-center my-4">
+        {selectedCategory ? `${selectedCategory} Products` : "All Products"}
+      </h2>
+      {/* 👇 All Products ke neeche paragraph */}
+      <p className="mb-10 text-center text-gray-500 text-sm w-[80%] mx-auto leading-relaxed">
+        Browse through our wide range of high-quality products carefully curated
+        to match your style and needs. Add items to your cart and continue
+        shopping with ease. Your satisfaction is our priority.
+      </p>
+      {/* Products Grid */}
+      <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
             <div
               key={product.id}
-              className={`border rounded-xl shadow-md p-4 flex flex-col h-full transition 
-                       ${
-                         theme === "dark"
-                           ? "bg-black border-yellow-700 text-gray-100"
-                           : "bg-white border-yellow-400 text-gray-900"
-                       }`}
+              className={`border rounded-xl shadow-md p-4 flex flex-col h-full transition ${
+                theme === "dark"
+                  ? "bg-black border-yellow-700 text-gray-100"
+                  : "bg-white border-yellow-400 text-gray-900"
+              }`}
             >
-              {/* Product Image */}
-              <div className="flex items-center justify-center">
-                <Image
-                  className="max-h-[150px] group-hover:scale-105 transition"
-                  src={product?.image || assets.poster}
-                  alt={product?.name}
-                  width={150}
-                  height={150}
-                />
-              </div>
+              <Link href={`/user/product/${product.id}`}>
+                <div className="flex items-center justify-center">
+                  <Image
+                    className="max-h-[150px] group-hover:scale-105 transition"
+                    src={product?.image[0] || assets.poster}
+                    alt={product?.name}
+                    width={150}
+                    height={150}
+                  />
+                </div>
+              </Link>
 
-              {/* Content */}
-              <div className="flex flex-col flex-1 justify-between mt-3">
+              <div className="flex flex-col flex-2 justify-between mt-3">
                 <div>
-                  {/* Category & Name */}
-                  <div className="text-sm">
-                    <p className="text-gray-500">{product?.category}</p>
-                    <p className="font-semibold text-lg truncate w-full text-yellow-700">
-                      {product?.name}
-                    </p>
-                  </div>
+                  <p className="text-gray-500">{product?.category}</p>
+                  <p className="font-semibold text-lg truncate w-full text-yellow-700">
+                    {product?.name}
+                  </p>
 
+                  <p className="text-sm mt-1 line-clamp-2">
+                    {product?.description}
+                  </p>
+                  
                   {/* Rating */}
                   <div className="flex items-center gap-0.5 mt-1">
                     {Array(5)
@@ -90,13 +118,6 @@ export default function CategoryPage() {
                       )}
                     <p className="text-sm ml-1">({product?.rating})</p>
                   </div>
-
-                  {/* Description */}
-                  <p className="text-sm mt-1 line-clamp-2">
-                    {product?.description}
-                  </p>
-
-                  {/* Price Row */}
                   <div className="flex items-center justify-between mt-3">
                     <p className="md:text-lg text-base font-medium text-yellow-600">
                       ${product?.offerPrice}
@@ -107,12 +128,16 @@ export default function CategoryPage() {
                   </div>
                 </div>
 
-                {/* Buttons */}
+                {/* Add to Cart / Quantity buttons */}
                 <div className="flex flex-col gap-2 mt-2">
                   {!counts[product.id] || counts[product.id] === 0 ? (
                     <button
                       className="flex items-center justify-center gap-1 bg-yellow-100 border border-yellow-400 px-3 h-[34px] rounded text-yellow-700 font-medium hover:bg-yellow-200"
-                      onClick={() => handleAdd(product.id)}
+                      onClick={() => {
+                        handleAdd(product.id);
+                        addToCart(product); // 👈 cart mein add hoga
+                        // ❌ router.push("/cart") hata diya
+                      }}
                     >
                       + Add
                     </button>
@@ -138,9 +163,13 @@ export default function CategoryPage() {
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        ) : (
+          <p className="col-span-full text-center text-gray-500">
+            No products found.
+          </p>
+        )}
+      </div>
     </section>
   );
 }

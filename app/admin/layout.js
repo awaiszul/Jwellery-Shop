@@ -10,7 +10,7 @@ export default function AdminLayout({ children }) {
   useEffect(() => {
     if (!loadingUser) {
       if (!user) {
-        router.push("/Login"); // agar user null hai to login pe bhej do
+        router.push("/user/Login"); // agar user null hai to login pe bhej do
       }
     }
   }, [user, loadingUser, router]);

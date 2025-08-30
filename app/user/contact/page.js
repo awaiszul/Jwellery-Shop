@@ -18,7 +18,7 @@ export default function ContactPage() {
         <div className="flex flex-col justify-center space-y-6 min-h-full">
           <h2 className="text-4xl font-bold text-yellow-600">Get in Touch</h2>
           <p className="text-lg leading-relaxed">
-            We'd love to hear from you! Whether you have a question about
+            We&apos;d love to hear from you! Whether you have a question about
             services, pricing, or anything else, our team is ready to answer all
             your questions.
           </p>

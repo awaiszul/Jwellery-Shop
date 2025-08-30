@@ -17,7 +17,7 @@ export default function TopCategories() {
         {topCategories.map((cat, idx) => (
           <Link
             key={idx}
-            href={`/categories/${cat?.name}`} // ✅ slug me category name bhej do
+            href={`/user/categories/${cat?.name}`} // ✅ slug me category name bhej do
             className="flex flex-col items-center cursor-pointer"
           >
             <img

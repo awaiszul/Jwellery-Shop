@@ -14,13 +14,15 @@ export default function ProductDetailPage() {
 
   const product = products.find((p) => p.id.toString() === productId);
 
+  // ✅ Agar product hi nahi mila
+  
+  // ✅ Ab product safe hai, uske baad hooks use karo
+  const images = Array.isArray(product.image) ? product.image : [product.image];
+  const [thumbnail, setThumbnail] = useState(images[0]);
+  
   if (!product) {
     return <p className="text-center mt-10 text-red-500">Product not found!</p>;
   }
-
-  const images = Array.isArray(product.image) ? product.image : [product.image];
-  const [thumbnail, setThumbnail] = useState(images[0]);
-
   return (
     <section
       className={`py-16 mt-16 px-6 md:px-20 ${
@@ -41,12 +43,12 @@ export default function ProductDetailPage() {
               Home
             </span>
           </Link>{" "}
-          /{" "}
+          /{" "} <Link href="/user/product">
           <span
             className={theme === "dark" ? "text-gray-400" : "text-gray-600"}
           >
             Products
-          </span>{" "}
+          </span> </Link>{" "}
           / <span className="text-yellow-500">{product.category}</span> /{" "}
           <span className="text-red-500">{product.name}</span>
         </p>
@@ -154,17 +156,17 @@ export default function ProductDetailPage() {
             <p className="mt-4 text-gray-600">{product.description}</p>
 
             {/* Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full">
-  <button onClick={addToCart} className="w-full cursor-pointer sm:w-1/2 py-3 font-medium border border-yellow-400 text-yellow-400 hover:bg-yellow-50 transition">
-    Add to Cart
-  </button>
-  <button className="w-full cursor-pointer sm:w-1/2 py-3 font-medium bg-yellow-500 text-white hover:bg-yellow-400 transition">
-  <Link href={"/buy"}>
-    Buy Now
-  </Link>
-  </button>
-</div>
-
+            <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full">
+              <button
+                onClick={addToCart}
+                className="w-full cursor-pointer sm:w-1/2 py-3 font-medium border border-yellow-400 text-yellow-400 hover:bg-yellow-50 transition"
+              >
+                Add to Cart
+              </button>
+              <button className="w-full cursor-pointer sm:w-1/2 py-3 font-medium bg-yellow-500 text-white hover:bg-yellow-400 transition">
+                <Link href={"/user/buy"}>Buy Now</Link>
+              </button>
+            </div>
           </div>
         </div>
       </div>
