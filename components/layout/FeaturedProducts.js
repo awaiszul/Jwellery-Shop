@@ -31,7 +31,7 @@ export default function FeaturedProducts() {
       </h2>
 
       {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2 mx-8 sm:mx-5 md:mx-auto mt-10">
         {featuredProducts?.map((product) => (
           <div
             key={product.id}
