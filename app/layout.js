@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${outfit.variable} ${ovo.variable} font-[outfit] antialiased`}
+        className={`${outfit.variable} ${ovo.variable} font-[Outfit] antialiased`}
       >
         <ThemeProvider>
           <Navbar />

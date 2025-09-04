@@ -7,7 +7,7 @@ export default function About() {
 
   return (
     <section
-      className={`min-h-screen py-16 px-6 md:px-20 mt-20 ${
+      className={`min-h-screen font-[Outfit] py-16 px-6 md:px-20 mt-20 ${
         theme === "light"
           ? "bg-white text-gray-900"
           : "bg-gray-950 text-gray-100"
