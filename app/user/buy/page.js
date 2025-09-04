@@ -1,29 +1,54 @@
 "use client";
-
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-
+import { useSearchParams } from "next/navigation";
 export default function BuyNowPage() {
-  const { theme } = useContext(ThemeContext);
+  const { theme, cart, cartTotal, selectedAddress } = useContext(ThemeContext); // 🟢 cart & total
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     address: "",
     city: "",
-    state: "",
+    province: "",
     zip: "",
     cardNumber: "",
     expiry: "",
     cvv: "",
   });
 
+  useEffect(() => {
+    if (selectedAddress) {
+      setFormData((prev) => ({
+        ...prev,
+        name: selectedAddress.fullName || "",
+        email: selectedAddress.email || "",
+        address: selectedAddress.address || "",
+        city: selectedAddress.city || "",
+        province: selectedAddress.province || "",
+        zip: selectedAddress.zip || "",
+      }));
+    }
+  }, [selectedAddress]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  const params = useSearchParams();
+ const productId = params.get("productId");
+
+const itemsToCheckout = productId
+  ? cart.filter(
+      (item) =>
+        item?.id && productId && item.id.toString() === productId.toString()
+    )
+  : cart;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Order Placed Successfully!");
+    if (cart.length === 0) {
+      alert("⚠️ Your cart is empty. Please add items first.");
+      return;
+    }
+    alert("✅ Order Placed Successfully!");
   };
 
   // Placeholder color based on theme
@@ -48,8 +73,9 @@ export default function BuyNowPage() {
             Checkout
           </h1>
 
-          <h2 className="text-xl font-semibold text-amber-400
-           mb-2">Billing & Shipping</h2>
+          <h2 className="text-xl font-semibold text-amber-400 mb-2">
+            Billing & Shipping
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
@@ -93,9 +119,9 @@ export default function BuyNowPage() {
             />
             <input
               type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
+              name="province"
+              placeholder="Province"
+              value={formData.province}
               onChange={handleChange}
               required
               className={`w-full p-3 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-transparent ${placeholderColor}`}
@@ -113,7 +139,9 @@ export default function BuyNowPage() {
           />
 
           {/* Payment Section */}
-          <h2 className="text-xl font-semibold text-amber-400 mt-4 mb-2">Payment Details</h2>
+          <h2 className="text-xl font-semibold text-amber-400 mt-4 mb-2">
+            Payment Details
+          </h2>
           <input
             type="text"
             name="cardNumber"
@@ -159,36 +187,59 @@ export default function BuyNowPage() {
             theme === "dark" ? "bg-black" : "bg-white"
           }`}
         >
-          <h2 className="text-xl text-amber-500 font-semibold mb-4">Order Summary</h2>
+          <h2 className="text-xl text-amber-500 font-semibold mb-4">
+            Order Summary
+          </h2>
+
+          {/* Cart Items List */}
+          {itemsToCheckout.length > 0 ? (
+            itemsToCheckout.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center gap-3 border-b border-gray-300 pb-2 mb-2"
+              >
+                <img
+                  src={
+                    Array.isArray(item.image)
+                      ? item.image[0]
+                      : item.image || "/fallback.jpg"
+                  }
+                  alt={item.name || "Product"}
+                  className="w-16 h-16 object-cover"
+                />
+
+                <div>
+                  <p className="font-medium text-yellow-500">{item.name}</p>
+                  <p className="text-gray-400 text-sm">
+                    {item.quantity} × ${item.offerPrice}
+                  </p>
+                </div>
+                <p className="ml-auto font-semibold text-yellow-600">
+                  ${(item.quantity * item.offerPrice).toFixed(2)}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-400">No items in cart</p>
+          )}
+
+          {/* Totals */}
           <div className="flex justify-between text-gray-500">
             <span>Subtotal</span>
-            <span>$159</span>
+            <span>${cartTotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-gray-500">
             <span>Shipping</span>
-            <span>$10</span>
+            <span>$0</span>
           </div>
           <div className="flex justify-between font-semibold text-yellow-500 text-lg mt-2">
             <span>Total</span>
-            <span>$169</span>
+            <span>${cartTotal.toFixed(2)}</span>
           </div>
 
           <p className="text-gray-400 text-sm mt-4">
             Your payment information is secure and encrypted.
           </p>
-
-          {/* Product Preview */}
-          <div className="mt-4 flex items-center gap-3">
-            <img
-              src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/card/productImage.png"
-              alt="Product"
-              className="w-16 h-16 object-cover"
-            />
-            <div>
-              <p className="font-medium text-yellow-500">Nike Pegasus 41</p>
-              <p className="text-gray-400 text-sm">1 Item</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -53,7 +53,7 @@ export const products = [
     name: "Diamond Ring",
     price: 500,
     offerPrice: 450,
-    image: [assets.ring],
+    image: [assets.ring, assets.ring, assets.ring],
     category: "Rings",
     rating: 4.8,
     stock: 12,

@@ -14,7 +14,12 @@ export const ThemeProvider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
   const [selectedGender, setSelectedGender] = useState([]);
-
+  const [addresses, setAddresses] = useState([]); // all saved addresses
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const addAddress = (address) => {
+    setAddresses((prev) => [...prev, address]);
+    setSelectedAddress(address);
+  };
   // cart
   const [counts, setCounts] = useState({});
   const handleAdd = (id) =>
@@ -160,6 +165,11 @@ export const ThemeProvider = ({ children }) => {
     filteredProducts,
     getFilteredProducts,
     featuredProducts,
+
+    addresses,
+    addAddress,
+    selectedAddress,
+    setSelectedAddress,
 
     user,
     setUser,

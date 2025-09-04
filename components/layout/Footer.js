@@ -10,12 +10,14 @@ export default function Footer() {
 
   return (
     <footer
-      className={`px-6 md:px-16 lg:px-24 xl:px-32 w-full transition-colors duration-500
-        ${theme === "dark" ? "bg-black text-gray-300" : "bg-white text-gray-700"}
+      className={`px-6 md:px-16 lg:px-24 xl:px-25 w-full transition-colors duration-500
+        ${
+          theme === "dark" ? "bg-black text-gray-300" : "bg-white text-gray-700"
+        }
       `}
     >
       <div
-        className={`flex flex-col md:flex-row items-start justify-center gap-10 py-10 border-b
+        className={`flex flex-col md:flex-row items-start justify-between gap-10 py-10 border-b
           ${theme === "dark" ? "border-yellow-500/20" : "border-yellow-600/20"}
         `}
       >
@@ -117,10 +119,18 @@ export default function Footer() {
                 theme === "dark" ? "text-gray-400" : "text-gray-500"
               }`}
             >
-              <li><Link href="#">Documentation</Link></li>
-              <li><Link href="#">Tutorials</Link></li>
-              <li><Link href="#">Blog</Link></li>
-              <li><Link href="#">Community</Link></li>
+              <li>
+                <Link href="/user/terms">Documentation</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Tutorials</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Blog</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Community</Link>
+              </li>
             </ul>
           </div>
 
@@ -137,10 +147,18 @@ export default function Footer() {
                 theme === "dark" ? "text-gray-400" : "text-gray-500"
               }`}
             >
-              <li><Link href="#">About</Link></li>
-              <li><Link href="#">Careers</Link></li>
-              <li><Link href="#">Privacy</Link></li>
-              <li><Link href="#">Terms</Link></li>
+              <li>
+                <Link href="/user/about">About</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Careers</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Privacy</Link>
+              </li>
+              <li>
+                <Link href="/user/terms">Terms</Link>
+              </li>
             </ul>
           </div>
         </div>
@@ -157,8 +175,7 @@ export default function Footer() {
           href="/"
           className={`${
             theme === "dark" ? "text-yellow-400" : "text-yellow-700"
-          }`}
-        >
+          }`}>
           Muhammad Awais
         </Link>
         . All Rights Reserved.

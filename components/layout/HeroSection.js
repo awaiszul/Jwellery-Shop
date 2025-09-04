@@ -32,7 +32,7 @@ export default function HeroSection() {
           className={`text-4xl md:text-5xl font-bold font-['Ovo'] mb-4 
             ${theme === "dark" ? "text-yellow-300" : "text-yellow-500"}`}
         >
-          Welcome to Our <br/> Store
+          Welcome to Our <br /> Store
         </h1>
 
         <p

@@ -33,19 +33,13 @@ export default function Navbar() {
   // 🟢 Outside click handler
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (
-        profileRef.current && !profileRef.current.contains(e.target)
-      ) {
+      if (profileRef.current && !profileRef.current.contains(e.target)) {
         setOpen(false);
       }
-      if (
-        searchRef.current && !searchRef.current.contains(e.target)
-      ) {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
         setSearchOpen(false);
       }
-      if (
-        menuRef.current && !menuRef.current.contains(e.target)
-      ) {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
     };
@@ -84,7 +78,11 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/", icon: <Home size={18} /> },
     { name: "About", href: "/user/about", icon: <Info size={18} /> },
-    { name: "All Products", href: "/user/product", icon: <Package size={18} /> },
+    {
+      name: "All Products",
+      href: "/user/product",
+      icon: <Package size={18} />,
+    },
     { name: "Contact", href: "/user/contact", icon: <Phone size={18} /> },
   ];
   if (loadingUser) {
@@ -222,7 +220,8 @@ export default function Navbar() {
                 theme === "light"
                   ? "bg-white text-gray-800"
                   : "bg-gray-900 text-gray-200"
-              }`} ref={profileRef}
+              }`}
+                  ref={profileRef}
                 >
                   <Link
                     href="/user/buyer_orders"
@@ -257,14 +256,14 @@ export default function Navbar() {
           className={`md:hidden px-4 py-3 shadow transition-all duration-300
           ${theme === "light" ? "bg-white" : "bg-gray-950"}
         `}
-        ref={searchRef}
+          ref={searchRef}
         >
           <div className="relative">
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className={`w-full pl-9 pr-3 py-2 rounded-lg border text-sm focus:ring-1 focus:outline-none transition
                 ${
                   theme === "light"
@@ -289,7 +288,8 @@ export default function Navbar() {
               theme === "light"
                 ? "bg-white text-gray-900"
                 : "bg-gray-950 text-gray-100"
-            }`} ref={menuRef}
+            }`}
+          ref={menuRef}
         >
           <ul className="flex flex-col space-y-4 text-base font-medium">
             {navLinks.map((link, idx) => (
@@ -306,7 +306,7 @@ export default function Navbar() {
           </ul>
 
           <Link
-            href="/get-started"
+            href="/user/Login"
             className={`block w-full text-center px-5 py-2 rounded-full font-medium transition
               ${
                 theme === "light"

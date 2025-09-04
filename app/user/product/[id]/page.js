@@ -50,7 +50,7 @@ export default function ProductDetailPage() {
             Products
           </span> </Link>{" "}
           / <span className="text-yellow-500">{product.category}</span> /{" "}
-          <span className="text-red-500">{product.name}</span>
+          <span className="text-orange-500">{product.name}</span>
         </p>
 
         <div className="flex flex-col md:flex-row gap-12 mt-6 justify-center items-start">
@@ -99,7 +99,7 @@ export default function ProductDetailPage() {
 
           {/* Product Details */}
           <div className="md:w-1/2 flex flex-col gap-4 font-ovo text-center md:text-left">
-            <h1 className="text-3xl font-bold">{product.name}</h1>
+            <h1 className="text-3xl text-amber-500 font-bold">{product.name}</h1>
             <p className="text-sm text-gray-500">
               Category:{" "}
               <span className="text-yellow-500">{product.category}</span>
@@ -163,9 +163,11 @@ export default function ProductDetailPage() {
               >
                 Add to Cart
               </button>
-              <button className="w-full cursor-pointer sm:w-1/2 py-3 font-medium bg-yellow-500 text-white hover:bg-yellow-400 transition">
-                <Link href={"/user/buy"}>Buy Now</Link>
+              <Link href={`/user/buy?productId=${product.id}`} className="w-full cursor-pointer sm:w-1/2 py-3 font-medium bg-yellow-500 text-white hover:bg-yellow-400 transition " >
+              <button onClick={()=>addToCart(product)} className=" w-full justify-center block m-auto" >
+                Buy Now
               </button>
+                </Link>
             </div>
           </div>
         </div>

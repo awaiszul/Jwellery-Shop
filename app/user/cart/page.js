@@ -1,5 +1,7 @@
 "use client";
 import React, { useContext, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { ThemeContext } from "@/context/ThemeContext";
 import {
   FaArrowLeft,
@@ -17,23 +19,23 @@ const CartPage = () => {
     updateQuantity,
     cartTotal,
     theme,
+    addresses,
+    selectedAddress,
+    setSelectedAddress,
   } = useContext(ThemeContext);
   const [showAddress, setShowAddress] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [address, setAddress] = useState(""); // default empty
   const router = useRouter();
-
- 
 
   const handleAddressChange = () => {
     router.push("/user/address"); // open address page
   };
-    const handlePlaceOrder = () => {
+  const handlePlaceOrder = () => {
     if (cart.length === 0) {
       alert("Your cart is empty. Please add items before placing an order.");
       return;
     }
-     if (!address) {
+    if (!selectedAddress) {
       alert("⚠️ Please select or add an address before placing order!");
       return;
     }
@@ -42,7 +44,6 @@ const CartPage = () => {
     } else {
       router.push("/user/buy"); // Online payment page
     }
-    
   };
 
   // 🎨 Theme colors
@@ -52,7 +53,7 @@ const CartPage = () => {
 
   return (
     <div
-      className={`flex flex-col md:flex-row py-16 max-w-6xl w-full px-6 mx-auto ${bgColor} font-ovo my-20`}
+      className={`flex flex-col md:flex-row py-16 max-w-6xl w-full px-5 sm:px-2 md:px-6 mx-auto ${bgColor} font-ovo my-20`}
     >
       {/* Left: Cart Items */}
       <div className="flex-1 max-w-4xl">
@@ -63,7 +64,7 @@ const CartPage = () => {
 
         {/* Header Row */}
         <div
-          className={`grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3 mx-5 border-b ${borderColor}`}
+          className={`grid grid-cols-[2fr_1fr_1fr] text-gray-500 text-base font-medium pb-3 border-b ${borderColor}`}
         >
           <p className="text-left">Product Details</p>
           <p className="text-center">Subtotal</p>
@@ -77,48 +78,53 @@ const CartPage = () => {
             className={`grid grid-cols-[2fr_1fr_1fr] items-center text-sm md:text-base font-medium py-4 mx-5 border-b ${borderColor}`}
           >
             {/* Product Info */}
-            <div className="flex items-center md:gap-6 gap-3">
-              <div
-                className={`cursor-pointer w-24 h-24 flex items-center justify-center border ${borderColor} overflow-hidden`}
-              >
-                <img
-                  className="max-w-full h-full object-cover"
-                  src={product.image}
-                  alt={product.name}
-                />
-              </div>
-              <div>
-                <p className="hidden md:block font-semibold">{product.name}</p>
-                <div className="font-normal text-gray-500/70">
-                  <p>
-                    Size: <span>{product.size || "N/A"}</span>
+            <Link href={`/user/product/${product.id}`}>
+              <div className="flex items-center md:gap-6 sm:gap-12">
+                <div
+                  className={`cursor-pointer w-24 h-24 flex items-center justify-center border ${borderColor} overflow-hidden`}
+                >
+                  <Image
+                    className="max-w-full h-full object-cover"
+                    src={product?.image[0]}
+                    alt={product.name}
+                    width={100}
+                    height={100}
+                  />
+                </div>
+                <div>
+                  <p className="hidden md:block font-semibold">
+                    {product.name}
                   </p>
-                  <div className="flex items-center">
-                    <p>Qty:</p>
-                    <select
-                      className={`outline-none ml-2 border ${borderColor} px-2 py-1 bg-transparent text-current`}
-                      value={product.quantity}
-                      onChange={(e) =>
-                        updateQuantity(product.id, e.target.value)
-                      }
-                    >
-                      {Array(10)
-                        .fill("")
-                        .map((_, index) => (
-                          <option
-                            key={index}
-                            value={index + 1}
-                            className="text-black dark:text-white bg-white dark:bg-gray-900"
-                          >
-                            {index + 1}
-                          </option>
-                        ))}
-                    </select>
+                  <div className="font-normal text-gray-500/70">
+                    <p>
+                      Size: <span>{product.size || "N/A"}</span>
+                    </p>
+                    <div className="flex items-center">
+                      <p>Qty:</p>
+                      <select
+                        className={`outline-none ml-2 border ${borderColor} px-2 py-1 bg-transparent text-current`}
+                        value={product.quantity}
+                        onChange={(e) =>
+                          updateQuantity(product.id, e.target.value)
+                        }
+                      >
+                        {Array(10)
+                          .fill("")
+                          .map((_, index) => (
+                            <option
+                              key={index}
+                              value={index + 1}
+                              className="text-black dark:text-white bg-white dark:bg-gray-900"
+                            >
+                              {index + 1}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
+            </Link>
             {/* Price */}
             <p className="text-center text-yellow-600 font-semibold">
               ${product.offerPrice * product.quantity}
@@ -150,13 +156,16 @@ const CartPage = () => {
         <hr className="my-4 border-t-1 border-yellow-500" />
 
         {/* Address */}
+        {/* Address */}
         <div className="mb-6">
           <p className="text-sm font-medium uppercase flex items-center gap-2">
             <FaMapMarkerAlt /> Delivery Address
           </p>
           <div className="relative flex justify-between items-start mt-2">
             <p className="text-gray-500">
-              {address ? address : "No address found"}
+              {selectedAddress
+                ? `${selectedAddress.fullName}, ${selectedAddress.address}, ${selectedAddress.city}, ${selectedAddress.country}`
+                : "No address found"}
             </p>
             <button
               onClick={() => setShowAddress(!showAddress)}
@@ -164,23 +173,30 @@ const CartPage = () => {
             >
               Change
             </button>
+
             {showAddress && (
-              <div className="absolute top-6 bg-white border border-gray-300 text-sm w-full">
-                <p
-                  onClick={() => {
-                    setAddress("New York, USA");
-                    setShowAddress(false);
-                  }}
-                  className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  New York, USA
-                </p>
-                <p
-                  onClick={handleAddressChange}
-                  className="text-yellow-500 text-center cursor-pointer p-2 hover:bg-yellow-500/10"
-                >
-                  Add address
-                </p>
+              <div className="absolute top-6 bg-white border border-gray-300 text-sm w-full z-10">
+                {addresses.length > 0 ? (
+                  addresses.map((addr, idx) => (
+                    <p
+                      key={idx}
+                      onClick={() => {
+                        setSelectedAddress(addr);
+                        setShowAddress(false);
+                      }}
+                      className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
+                    >
+                      {addr.fullName}, {addr.city}
+                    </p>
+                  ))
+                ) : (
+                  <p
+                    onClick={() => router.push("/user/address")}
+                    className="text-yellow-500 text-center cursor-pointer p-2 hover:bg-yellow-500/10"
+                  >
+                    Add address
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -239,7 +255,9 @@ const CartPage = () => {
 
         {/* Button */}
         <button
-          onClick={()=>{ handlePlaceOrder();}}
+          onClick={() => {
+            handlePlaceOrder();
+          }}
           className="w-full py-3 mt-6 cursor-pointer bg-yellow-600 text-white font-semibold hover:bg-yellow-700 transition border border-yellow-700"
         >
           {paymentMethod === "COD" ? "Place Order" : "Proceed to Checkout"}

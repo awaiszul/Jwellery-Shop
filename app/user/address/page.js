@@ -2,27 +2,29 @@
 
 import { useContext, useState } from "react";
 import { ThemeContext } from "@/context/ThemeContext";
-
+import { useRouter } from "next/navigation";
 export default function AddAddressPage() {
-  const { theme } = useContext(ThemeContext);
+  const { theme, addAddress  } = useContext(ThemeContext);
   const [formData, setFormData] = useState({
     fullName: "",
     phone: "",
     email: "",
     address: "",
     city: "",
-    state: "",
+    province: "",
     zip: "",
     country: "",
   });
-
+const router = useRouter();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    addAddress(formData);
     alert("Address Saved Successfully!");
+    router.push("/user/cart");
   };
 
   const placeholderColor =
@@ -40,13 +42,9 @@ export default function AddAddressPage() {
           onSubmit={handleSubmit}
           className={`flex flex-col gap-4 p-6   transition-colors duration-300 $`}
         >
-          <h1 className="text-3xl font-bold mb-2 text-amber-400 text-center md:text-left">
+          <h1 className="text-3xl font-bold text-amber-400 text-center md:text-left">
             Add New Address
           </h1>
-
-          <h2 className="text-xl font-semibold text-amber-300 mb-2">
-            Address Information
-          </h2>
 
           <input
             type="text"
@@ -101,9 +99,9 @@ export default function AddAddressPage() {
             />
             <input
               type="text"
-              name="state"
-              placeholder="State"
-              value={formData.state}
+              name="province"
+              placeholder="Province/State"
+              value={formData.province}
               onChange={handleChange}
               required
               className={`w-full p-3  border border-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-transparent ${placeholderColor}`}
@@ -143,7 +141,7 @@ export default function AddAddressPage() {
         <div
           className={`p-6   transition-colors duration-300 overflow-x-auto `}
         >
-          <h2 className="text-xl font-semibold mb-4 text-amber-400">
+          <h2 className="text-xl font-semibold my-4 text-amber-400">
             Address Preview
           </h2>
           <table className="w-full border border-gray-300">
@@ -179,9 +177,9 @@ export default function AddAddressPage() {
                 </td>
               </tr>
               <tr className="border-b border-gray-300">
-                <td className="p-2 font-medium">State</td>
+                <td className="p-2 font-medium">Province</td>
                 <td className="p-2 text-gray-500">
-                  {formData.state || "Not provided"}
+                  {formData.province || "Not provided"}
                 </td>
               </tr>
               <tr className="border-b border-gray-300">
