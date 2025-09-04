@@ -78,18 +78,18 @@ const CartPage = () => {
             className={`grid grid-cols-[2fr_1fr_1fr] items-center text-sm md:text-base font-medium py-4 mx-5 border-b ${borderColor}`}
           >
             {/* Product Info */}
-            <Link href={`/user/product/${product.id}`}>
               <div className="flex items-center md:gap-6 sm:gap-12">
                 <div
                   className={`cursor-pointer w-24 h-24 flex items-center justify-center border ${borderColor} overflow-hidden`}
                 >
+            <Link href={`/user/product/${product.id}`}>
                   <Image
                     className="max-w-full h-full object-cover"
                     src={product?.image[0]}
                     alt={product.name}
                     width={100}
                     height={100}
-                  />
+                  /></Link>
                 </div>
                 <div>
                   <p className="hidden md:block font-semibold">
@@ -124,7 +124,7 @@ const CartPage = () => {
                   </div>
                 </div>
               </div>
-            </Link>
+           
             {/* Price */}
             <p className="text-center text-yellow-600 font-semibold">
               ${product.offerPrice * product.quantity}
